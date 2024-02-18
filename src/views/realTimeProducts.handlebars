@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Productos en tiempo real</title>
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <h1>Productos</h1>
+    <ul id="products"></ul>
+
+    <form id="newProductForm">
+        <input type="text" id="productName" placeholder="Nombre del producto">
+        <button type="submit">Agregar producto</button>
+    </form>
+
+    <script>
+        var socket = io();
+
+        socket.on('new product', function(product){
+            var li = document.createElement("li");
+            li.appendChild(document.createTextNode(product));
+            document.getElementById('products').appendChild(li);
+        });
+
+        socket.on('delete product', function(productId){
+            // Aquí puedes manejar la eliminación de un producto de la lista
+        });
+
+        document.getElementById('newProductForm').addEventListener('submit', function(e){
+            e.preventDefault();
+            var productName = document.getElementById('productName').value;
+            socket.emit('new product', productName);
+            document.getElementById('productName').value = '';
+        });
+    </script>
+</body>
+</html>
